@@ -2,10 +2,14 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        'KpLocalStorage':'./src/index.js',
+        'KpLocalStorage.min':'./src/index.js'
+    },
     output: {
-        filename: './dist/localStorage.js',
-        library: 'LocalStorage'
+        filename: './dist/[name].js',
+        library: 'KpLocalStorage',
+        libraryTarget:'umd'
     },
     devtool: 'source-map',
     resolve: {
@@ -13,7 +17,9 @@ module.exports = {
     },
     // Add minification
     plugins: [
-        new webpack.optimize.UglifyJsPlugin()
+        new webpack.optimize.UglifyJsPlugin({
+            include:/\.min\.js($|\?)/i
+        })
     ],
     module: {
         loaders: [

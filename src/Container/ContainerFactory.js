@@ -12,7 +12,7 @@ let adapters = {
     arraystorage: ArrayStorage
 };
 
-function containerFactory(options) {
+function ContainerFactory(options) {
 
     'use strict';
 
@@ -46,4 +46,4 @@ function containerFactory(options) {
 
 }
 
-export default containerFactory;
+export default ContainerFactory;

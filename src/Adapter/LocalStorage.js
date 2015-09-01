@@ -3,22 +3,24 @@ import Util from '../Unit/Util.js';
 
 class LocalStorage extends AbstractAdapter {
 
+
     constructor(options = {}) {
         super(options);
+        this._type = 'localStorage';
     }
 
-    getName(){
+    getName() {
         return 'LocalStorage';
     }
 
     isSupported() {
         try {
-            let supported = ('localStorage' in window && window.localStorage !== null);
+            let supported = (this._type in window && window[this._type] !== null);
 
             // safari (OS X or iOS) is in private browsing mode
             if (supported) {
                 let key = this._containerName + '__' + Math.round(Math.random() * 1e7);
-                let storage = window.localStorage;
+                let storage = window[this._type];
                 storage.setItem(key, '');
                 storage.removeItem(key);
             }
@@ -31,7 +33,7 @@ class LocalStorage extends AbstractAdapter {
     setContainer(container) {
         let containerJson = Util.toJson(container);
         try {
-            window.localStorage.setItem(this._containerName, containerJson);
+            window[this._type].setItem(this._containerName, containerJson);
         } catch (e) {
             // @todo error 可能存满了？
         }
@@ -39,7 +41,7 @@ class LocalStorage extends AbstractAdapter {
     }
 
     getContainer() {
-        let containerJson = window.localStorage.getItem(this._containerName);
+        let containerJson = window[this._type].getItem(this._containerName);
 
         if (!containerJson) {
             return {};
@@ -49,7 +51,7 @@ class LocalStorage extends AbstractAdapter {
     }
 
     removeContainer() {
-        window.localStorage.removeItem(this._containerName);
+        window[this._type].removeItem(this._containerName);
         return this;
     }
 
