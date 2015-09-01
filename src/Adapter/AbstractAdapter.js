@@ -1,26 +1,29 @@
 class AbstractAdapter {
 
-    _isSupported;
-    _containerName;
+    constructor(options = {}) {
+        if(options.containerName){
+            this._containerName = options.containerName;
+        }
+    }
 
-    constructor() {
-        this._isSupported = this.isSupported();
+    getName() {
+        throw new Error('This method is abstract');
     }
 
     isSupported() {
-        throw new Error("This method is abstract");
+        throw new Error('This method is abstract');
     }
 
-    setContainer(container) {
-        throw new Error("This method is abstract");
+    setContainer() {
+        throw new Error('This method is abstract');
     }
 
     getContainer() {
-        throw new Error("This method is abstract");
+        throw new Error('This method is abstract');
     }
 
     removeContainer() {
-        throw new Error("This method is abstract");
+        throw new Error('This method is abstract');
     }
 
     getItem(key) {

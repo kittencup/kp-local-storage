@@ -1,13 +1,14 @@
-class Container {
+import LocalStorage from '../Adapter/LocalStorage.js';
 
-    adapter;
-    name;
+class Container {
 
     constructor(name, adapter) {
         this.name = name;
 
         if (adapter) {
             this.setAdapter(adapter);
+        } else {
+            this.setAdapter(new LocalStorage());
         }
 
     }
@@ -44,8 +45,17 @@ class Container {
         return this;
     }
 
+    getContainer() {
+        return this.adapter.getContainer();
+    }
+
     removeItem(key) {
         this.adapter.removeItem(key);
+        return this;
+    }
+
+    removeContainer(){
+        this.adapter.removeContainer();
         return this;
     }
 

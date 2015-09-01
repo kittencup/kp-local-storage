@@ -1,24 +1,24 @@
 import AbstractAdapter from './AbstractAdapter.js';
 import Util from '../Unit/Util.js';
 
-class LocalStorage extends AbstractAdapter {
+class SessionStorage extends AbstractAdapter {
 
     constructor(options = {}) {
         super(options);
     }
 
     getName(){
-        return 'LocalStorage';
+        return 'SessionStorage';
     }
 
     isSupported() {
         try {
-            let supported = ('localStorage' in window && window.localStorage !== null);
+            let supported = ('sessionStorage' in window && window.sessionStorage !== null);
 
             // safari (OS X or iOS) is in private browsing mode
             if (supported) {
                 let key = this._containerName + '__' + Math.round(Math.random() * 1e7);
-                let storage = window.localStorage;
+                let storage = window.sessionStorage;
                 storage.setItem(key, '');
                 storage.removeItem(key);
             }
@@ -31,7 +31,7 @@ class LocalStorage extends AbstractAdapter {
     setContainer(container) {
         let containerJson = Util.toJson(container);
         try {
-            window.localStorage.setItem(this._containerName, containerJson);
+            window.sessionStorage.setItem(this._containerName, containerJson);
         } catch (e) {
             // @todo error 可能存满了？
         }
@@ -39,7 +39,7 @@ class LocalStorage extends AbstractAdapter {
     }
 
     getContainer() {
-        let containerJson = window.localStorage.getItem(this._containerName);
+        let containerJson = window.sessionStorage.getItem(this._containerName);
 
         if (!containerJson) {
             return {};
@@ -49,10 +49,10 @@ class LocalStorage extends AbstractAdapter {
     }
 
     removeContainer() {
-        window.localStorage.removeItem(this._containerName);
+        window.sessionStorage.removeItem(this._containerName);
         return this;
     }
 
 }
 
-export default LocalStorage;
+export default SessionStorage;

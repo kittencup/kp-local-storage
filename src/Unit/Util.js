@@ -1,10 +1,11 @@
-let Util = {
-    jsonTo: (json)=> {
+class Util {
+    jsonTo(json) {
         return JSON.parse(json);
-    },
-    toJson: (value)=> {
+    }
+
+    toJson(value) {
         return JSON.stringify(value);
     }
-};
+}
 
-export default Util;
+export default new Util();
