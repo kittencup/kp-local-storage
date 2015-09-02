@@ -10,6 +10,10 @@ describe('Container Test', () => {
     var adapterContainter = {};
     adapterContainter[key] = item;
 
+    it('isSupported()', ()=> {
+        expect(container.isSupported()).toBe(true);
+    });
+
     it('setName(),getName()', ()=> {
         expect(container.setName(name)).toEqual(container);
         expect(container.getName()).toBe(name);

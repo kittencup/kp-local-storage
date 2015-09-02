@@ -13,6 +13,10 @@ class Container {
 
     }
 
+    isSupported() {
+        return this.adapter.isSupported();
+    }
+
     setName(name) {
         this.name = name;
         return this;
@@ -54,7 +58,7 @@ class Container {
         return this;
     }
 
-    removeContainer(){
+    removeContainer() {
         this.adapter.removeContainer();
         return this;
     }
