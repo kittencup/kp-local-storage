@@ -1,5 +1,5 @@
 [![npm](https://img.shields.io/badge/npm-1.0.0-blue.svg)](https://www.npmjs.com/package/kp-localstorage)
-[![Bower](https://img.shields.io/badge/npm-1.0.0-red.svg)](https://github.com/kittencup/kp-localstorage)
+[![Bower](https://img.shields.io/badge/bower-1.0.0-red.svg)](https://github.com/kittencup/kp-localstorage)
 # How To Use
 
 #### Adapter
