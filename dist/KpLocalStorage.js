@@ -137,6 +137,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    _createClass(Container, [{
+	        key: 'isSupported',
+	        value: function isSupported() {
+	            return this.adapter.isSupported();
+	        }
+	    }, {
 	        key: 'setName',
 	        value: function setName(name) {
 	            this.name = name;
@@ -190,6 +195,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: 'removeContainer',
 	        value: function removeContainer() {
 	            this.adapter.removeContainer();
+	            return this;
+	        }
+	    }, {
+	        key: 'setContainer',
+	        value: function setContainer(container) {
+	            this.adapter.setContainer(container);
 	            return this;
 	        }
 	    }]);
