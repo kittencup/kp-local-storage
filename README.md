@@ -1,4 +1,6 @@
-[![npm version](https://badge.fury.io/js/kp-localstorage.svg)](http://badge.fury.io/js/kp-localstorage)
+[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/kp-localstorage)
+[![Bower](https://img.shields.io/bower/v/bootstrap.svg)](https://github.com/kittencup/kp-localstorage)
+[![Github Releases](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](https://github.com/kittencup/kp-localstorage)
 
 # How To Use
 
