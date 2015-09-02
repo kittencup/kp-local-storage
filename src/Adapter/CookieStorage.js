@@ -24,13 +24,7 @@ class CookieStorage extends AbstractAdapter {
         }
     }
 
-    setContainer(container) {
-        let containerJson = Util.toJson(container);
-        document.cookie = this._containerName + '=' + encodeURIComponent(containerJson) + this.getCookieExpiry(this._expiry) + this.getCookiePath() + this.getCookieDomain();
-        return this;
-    }
-
-    getContainer() {
+    getItem(key) {
         let cookies = document.cookie && document.cookie.split(';') || [];
 
         for (let i = 0, l = cookies.length; i < l; i++) {
@@ -41,25 +35,32 @@ class CookieStorage extends AbstractAdapter {
                 cookie = cookie.substring(1, cookie.length);
             }
 
-            if (cookie.indexOf(this._containerName + '=') === 0) {
-                let containerJson = decodeURIComponent(cookie.substring(this._containerName.length + 1, cookie.length));
+            if (cookie.indexOf(key + '=') === 0) {
+                let itemJson = decodeURIComponent(cookie.substring(key.length + 1, cookie.length));
                 try {
-                    return Util.jsonTo(containerJson);
+                    return Util.jsonTo(itemJson);
                 } catch (e) {
 
                 }
             }
         }
-        return {};
+        return null;
     }
 
-    removeContainer() {
+    setItem(key, item) {
+        let itemJson = Util.toJson(item);
+        document.cookie = key + '=' + encodeURIComponent(itemJson) + this.getCookieExpiry(this._expiry) + this.getCookiePath() + this.getCookieDomain();
+        return this;
+    }
+
+    removeItem(key) {
         let expiry = this._expiry;
         this._expiry = this.dayToMillisecond(-1);
-        this.setContainer({});
+        this.setItem(key, {});
         this._expiry = expiry;
         return this;
     }
+
 
     getCookieDomain() {
         if (this._domain) {
