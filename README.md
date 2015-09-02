@@ -1,7 +1,5 @@
-[![npm](https://img.shields.io/npm/v/npm.svg)](https://www.npmjs.com/package/kp-localstorage)
-[![Bower](https://img.shields.io/bower/v/bootstrap.svg)](https://github.com/kittencup/kp-localstorage)
-[![Github Releases](https://img.shields.io/github/downloads/atom/atom/latest/total.svg)](https://github.com/kittencup/kp-localstorage)
-[![Downloads](http://img.shields.io/npm/dm/kp-localstorage.svg)](https://npmjs.org/package/kp-localstorage)
+[![npm](https://img.shields.io/badge/npm-1.0.0-blue.svg)](https://www.npmjs.com/package/kp-localstorage)
+[![Bower](https://img.shields.io/badge/npm-1.0.0-red.svg)](https://github.com/kittencup/kp-localstorage)
 # How To Use
 
 #### Adapter
