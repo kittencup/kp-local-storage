@@ -4,7 +4,7 @@ class ArrayStorage extends AbstractAdapter {
 
     constructor(options = {}) {
         super(options);
-        this._container = {};
+        this._storage = {};
     }
 
     getName() {
@@ -15,19 +15,17 @@ class ArrayStorage extends AbstractAdapter {
         return true;
     }
 
-    setContainer(container) {
-        this._container = container;
+    getItem(key) {
+        return this._storage[key] || null;
+    }
+
+    setItem(key, item) {
+        this._storage[key] = item;
         return this;
     }
 
-    getContainer() {
-        return this._container;
-    }
-
-    removeContainer() {
-
-        this._container = {};
-
+    removeItem(key) {
+        delete this._storage[key];
         return this;
     }
 }

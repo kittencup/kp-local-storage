@@ -3,68 +3,116 @@ import LocalStorage from '../Adapter/LocalStorage.js';
 class Container {
 
     constructor(name, adapter) {
-        this.name = name;
+
+        this._name = name;
 
         if (adapter) {
-            this.setAdapter(adapter);
+            this._adapter = adapter;
         } else {
-            this.setAdapter(new LocalStorage());
+            this._adapter = new LocalStorage();
         }
 
     }
 
+    isItemContainer(value) {
+        return Object.prototype.toString.call(value) === '[object Object]' && value.__type__ === 'itemContainer';
+    }
+
+    createItemContainer() {
+        let container = {};
+        container.__type__ = 'itemContainer';
+        return container;
+    }
+
     isSupported() {
-        return this.adapter.isSupported();
+        return this._adapter.isSupported();
     }
 
     setName(name) {
-        this.name = name;
+        this._name = name;
         return this;
     }
 
     getName() {
-        return this.name;
+        return this._name;
     }
 
     setAdapter(adapter) {
-        this.adapter = adapter;
-        this.adapter.setContainerName(this.name);
+        this._adapter = adapter;
         return this;
     }
 
     getAdapter() {
-        return this.adapter;
+        return this._adapter;
     }
 
     keys() {
-        return this.adapter.keys();
+        let itemContainer = this.getItemContainer();
+        let keys = [];
+
+        if (this.isItemContainer(itemContainer)) {
+            for (var key in itemContainer) {
+                if(itemContainer.hasOwnProperty(key)){
+                    if (key === '__type__') {
+                        continue;
+                    }
+                    keys.push(key);
+                }
+            }
+        }
+
+        return keys;
     }
 
     getItem(key) {
-        return this.adapter.getItem(key);
+
+        let itemContainer = this.getItemContainer();
+
+        if (this.isItemContainer(itemContainer)) {
+            return itemContainer[key] || null;
+        }
+
+        return null;
     }
 
     setItem(key, item) {
-        this.adapter.setItem(key, item);
-        return this;
-    }
 
-    getContainer() {
-        return this.adapter.getContainer();
+        let itemContainer = this.getItemContainer();
+
+        if (!this.isItemContainer(itemContainer)) {
+            itemContainer = this.createItemContainer();
+        }
+
+        itemContainer[key] = item;
+
+        this.setItemContainer(itemContainer);
+
+        return this;
     }
 
     removeItem(key) {
-        this.adapter.removeItem(key);
+
+        let itemContainer = this.getItemContainer();
+
+        if (this.isItemContainer(itemContainer)) {
+            delete itemContainer[key];
+            this.setItemContainer(itemContainer);
+        }
+
         return this;
     }
 
-    removeContainer() {
-        this.adapter.removeContainer();
+    getItemContainer() {
+        return this._adapter.getItem(this._name);
+    }
+
+    removeItemContainer() {
+        this._adapter.removeItem(this._name);
         return this;
     }
 
-    setContainer(container) {
-        this.adapter.setContainer(container);
+    setItemContainer(itemContainer) {
+        this._adapter.setItem(this._name, itemContainer);
         return this;
     }
 

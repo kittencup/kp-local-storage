@@ -1,5 +1,4 @@
 import LocalStorage from './LocalStorage.js';
-import Util from '../Unit/Util.js';
 
 class SessionStorage extends LocalStorage {
 

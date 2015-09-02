@@ -127,80 +127,129 @@ return /******/ (function(modules) { // webpackBootstrap
 	    function Container(name, adapter) {
 	        _classCallCheck(this, Container);
 	
-	        this.name = name;
+	        this._name = name;
 	
 	        if (adapter) {
-	            this.setAdapter(adapter);
+	            this._adapter = adapter;
 	        } else {
-	            this.setAdapter(new _AdapterLocalStorageJs2['default']());
+	            this._adapter = new _AdapterLocalStorageJs2['default']();
 	        }
 	    }
 	
 	    _createClass(Container, [{
+	        key: 'isItemContainer',
+	        value: function isItemContainer(value) {
+	            return Object.prototype.toString.call(value) === '[object Object]' && value.__type__ === 'itemContainer';
+	        }
+	    }, {
+	        key: 'createItemContainer',
+	        value: function createItemContainer() {
+	            var container = {};
+	            container.__type__ = 'itemContainer';
+	            return container;
+	        }
+	    }, {
 	        key: 'isSupported',
 	        value: function isSupported() {
-	            return this.adapter.isSupported();
+	            return this._adapter.isSupported();
 	        }
 	    }, {
 	        key: 'setName',
 	        value: function setName(name) {
-	            this.name = name;
+	            this._name = name;
 	            return this;
 	        }
 	    }, {
 	        key: 'getName',
 	        value: function getName() {
-	            return this.name;
+	            return this._name;
 	        }
 	    }, {
 	        key: 'setAdapter',
 	        value: function setAdapter(adapter) {
-	            this.adapter = adapter;
-	            this.adapter.setContainerName(this.name);
+	            this._adapter = adapter;
 	            return this;
 	        }
 	    }, {
 	        key: 'getAdapter',
 	        value: function getAdapter() {
-	            return this.adapter;
+	            return this._adapter;
 	        }
 	    }, {
 	        key: 'keys',
 	        value: function keys() {
-	            return this.adapter.keys();
+	            var itemContainer = this.getItemContainer();
+	            var keys = [];
+	
+	            if (this.isItemContainer(itemContainer)) {
+	                for (var key in itemContainer) {
+	                    if (itemContainer.hasOwnProperty(key)) {
+	                        if (key === '__type__') {
+	                            continue;
+	                        }
+	                        keys.push(key);
+	                    }
+	                }
+	            }
+	
+	            return keys;
 	        }
 	    }, {
 	        key: 'getItem',
 	        value: function getItem(key) {
-	            return this.adapter.getItem(key);
+	
+	            var itemContainer = this.getItemContainer();
+	
+	            if (this.isItemContainer(itemContainer)) {
+	                return itemContainer[key] || null;
+	            }
+	
+	            return null;
 	        }
 	    }, {
 	        key: 'setItem',
 	        value: function setItem(key, item) {
-	            this.adapter.setItem(key, item);
+	
+	            var itemContainer = this.getItemContainer();
+	
+	            if (!this.isItemContainer(itemContainer)) {
+	                itemContainer = this.createItemContainer();
+	            }
+	
+	            itemContainer[key] = item;
+	
+	            this.setItemContainer(itemContainer);
+	
 	            return this;
-	        }
-	    }, {
-	        key: 'getContainer',
-	        value: function getContainer() {
-	            return this.adapter.getContainer();
 	        }
 	    }, {
 	        key: 'removeItem',
 	        value: function removeItem(key) {
-	            this.adapter.removeItem(key);
+	
+	            var itemContainer = this.getItemContainer();
+	
+	            if (this.isItemContainer(itemContainer)) {
+	                delete itemContainer[key];
+	                this.setItemContainer(itemContainer);
+	            }
+	
 	            return this;
 	        }
 	    }, {
-	        key: 'removeContainer',
-	        value: function removeContainer() {
-	            this.adapter.removeContainer();
+	        key: 'getItemContainer',
+	        value: function getItemContainer() {
+	            return this._adapter.getItem(this._name);
+	        }
+	    }, {
+	        key: 'removeItemContainer',
+	        value: function removeItemContainer() {
+	            this._adapter.removeItem(this._name);
 	            return this;
 	        }
 	    }, {
-	        key: 'setContainer',
-	        value: function setContainer(container) {
-	            this.adapter.setContainer(container);
+	        key: 'setItemContainer',
+	        value: function setItemContainer(itemContainer) {
+	            this._adapter.setItem(this._name, itemContainer);
 	            return this;
 	        }
 	    }]);
@@ -275,31 +324,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }, {
-	        key: 'setContainer',
-	        value: function setContainer(container) {
-	            var containerJson = _UnitUtilJs2['default'].toJson(container);
+	        key: 'getItem',
+	        value: function getItem(key) {
+	            var itemJson = window[this._type].getItem(key);
+	
+	            if (!itemJson) {
+	                return null;
+	            }
+	
+	            return _UnitUtilJs2['default'].jsonTo(itemJson);
+	        }
+	    }, {
+	        key: 'setItem',
+	        value: function setItem(key, item) {
+	            var itemJson = _UnitUtilJs2['default'].toJson(item);
 	            try {
-	                window[this._type].setItem(this._containerName, containerJson);
+	                window[this._type].setItem(key, itemJson);
 	            } catch (e) {
 	                // @todo error 可能存满了？
 	            }
 	            return this;
 	        }
 	    }, {
-	        key: 'getContainer',
-	        value: function getContainer() {
-	            var containerJson = window[this._type].getItem(this._containerName);
-	
-	            if (!containerJson) {
-	                return {};
-	            }
-	
-	            return _UnitUtilJs2['default'].jsonTo(containerJson);
-	        }
-	    }, {
-	        key: 'removeContainer',
-	        value: function removeContainer() {
-	            window[this._type].removeItem(this._containerName);
+	        key: 'removeItem',
+	        value: function removeItem(key) {
+	            window[this._type].removeItem(key);
 	            return this;
 	        }
 	    }]);
@@ -326,13 +375,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var AbstractAdapter = (function () {
 	    function AbstractAdapter() {
-	        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-	
 	        _classCallCheck(this, AbstractAdapter);
-	
-	        if (options.containerName) {
-	            this._containerName = options.containerName;
-	        }
 	    }
 	
 	    _createClass(AbstractAdapter, [{
@@ -346,63 +389,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	            throw new Error('This method is abstract');
 	        }
 	    }, {
-	        key: 'setContainer',
-	        value: function setContainer() {
-	            throw new Error('This method is abstract');
-	        }
-	    }, {
-	        key: 'getContainer',
-	        value: function getContainer() {
-	            throw new Error('This method is abstract');
-	        }
-	    }, {
-	        key: 'removeContainer',
-	        value: function removeContainer() {
-	            throw new Error('This method is abstract');
-	        }
-	    }, {
 	        key: 'getItem',
-	        value: function getItem(key) {
-	            return this.getContainer()[key];
+	        value: function getItem() {
+	            throw new Error('This method is abstract');
 	        }
 	    }, {
 	        key: 'setItem',
-	        value: function setItem(key, item) {
-	            var container = this.getContainer();
-	            container[key] = item;
-	            this.setContainer(container);
-	            return this;
+	        value: function setItem() {
+	            throw new Error('This method is abstract');
 	        }
 	    }, {
 	        key: 'removeItem',
-	        value: function removeItem(key) {
-	            var container = this.getContainer();
-	            delete container[key];
-	            this.setContainer(container);
-	            return this;
-	        }
-	    }, {
-	        key: 'keys',
-	        value: function keys() {
-	            var container = this.getContainer();
-	            var keys = [];
-	            for (var key in container) {
-	                if (container.hasOwnProperty(key)) {
-	                    keys.push(key);
-	                }
-	            }
-	            return keys;
-	        }
-	    }, {
-	        key: 'setContainerName',
-	        value: function setContainerName(containerName) {
-	            this._containerName = containerName;
-	            return this;
-	        }
-	    }, {
-	        key: 'getContainerName',
-	        value: function getContainerName() {
-	            return this._containerName;
+	        value: function removeItem() {
+	            throw new Error('This method is abstract');
 	        }
 	    }]);
 	
@@ -472,10 +471,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _LocalStorageJs = __webpack_require__(2);
 	
 	var _LocalStorageJs2 = _interopRequireDefault(_LocalStorageJs);
-	
-	var _UnitUtilJs = __webpack_require__(4);
-	
-	var _UnitUtilJs2 = _interopRequireDefault(_UnitUtilJs);
 	
 	var SessionStorage = (function (_LocalStorage) {
 	    _inherits(SessionStorage, _LocalStorage);
@@ -560,15 +555,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 	        }
 	    }, {
-	        key: 'setContainer',
-	        value: function setContainer(container) {
-	            var containerJson = _UnitUtilJs2['default'].toJson(container);
-	            document.cookie = this._containerName + '=' + encodeURIComponent(containerJson) + this.getCookieExpiry(this._expiry) + this.getCookiePath() + this.getCookieDomain();
-	            return this;
-	        }
-	    }, {
-	        key: 'getContainer',
-	        value: function getContainer() {
+	        key: 'getItem',
+	        value: function getItem(key) {
 	            var cookies = document.cookie && document.cookie.split(';') || [];
 	
 	            for (var i = 0, l = cookies.length; i < l; i++) {
@@ -579,21 +567,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    cookie = cookie.substring(1, cookie.length);
 	                }
 	
-	                if (cookie.indexOf(this._containerName + '=') === 0) {
-	                    var containerJson = decodeURIComponent(cookie.substring(this._containerName.length + 1, cookie.length));
+	                if (cookie.indexOf(key + '=') === 0) {
+	                    var itemJson = decodeURIComponent(cookie.substring(key.length + 1, cookie.length));
 	                    try {
-	                        return _UnitUtilJs2['default'].jsonTo(containerJson);
+	                        return _UnitUtilJs2['default'].jsonTo(itemJson);
 	                    } catch (e) {}
 	                }
 	            }
-	            return {};
+	            return null;
 	        }
 	    }, {
-	        key: 'removeContainer',
-	        value: function removeContainer() {
+	        key: 'setItem',
+	        value: function setItem(key, item) {
+	            var itemJson = _UnitUtilJs2['default'].toJson(item);
+	            document.cookie = key + '=' + encodeURIComponent(itemJson) + this.getCookieExpiry(this._expiry) + this.getCookiePath() + this.getCookieDomain();
+	            return this;
+	        }
+	    }, {
+	        key: 'removeItem',
+	        value: function removeItem(key) {
 	            var expiry = this._expiry;
 	            this._expiry = this.dayToMillisecond(-1);
-	            this.setContainer({});
+	            this.setItem(key, {});
 	            this._expiry = expiry;
 	            return this;
 	        }
@@ -663,7 +658,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _classCallCheck(this, ArrayStorage);
 	
 	        _get(Object.getPrototypeOf(ArrayStorage.prototype), 'constructor', this).call(this, options);
-	        this._container = {};
+	        this._storage = {};
 	    }
 	
 	    _createClass(ArrayStorage, [{
@@ -677,22 +672,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return true;
 	        }
 	    }, {
-	        key: 'setContainer',
-	        value: function setContainer(container) {
-	            this._container = container;
+	        key: 'getItem',
+	        value: function getItem(key) {
+	            return this._storage[key] || null;
+	        }
+	    }, {
+	        key: 'setItem',
+	        value: function setItem(key, item) {
+	            this._storage[key] = item;
 	            return this;
 	        }
 	    }, {
-	        key: 'getContainer',
-	        value: function getContainer() {
-	            return this._container;
-	        }
-	    }, {
-	        key: 'removeContainer',
-	        value: function removeContainer() {
-	
-	            this._container = {};
-	
+	        key: 'removeItem',
+	        value: function removeItem(key) {
+	            delete this._storage[key];
 	            return this;
 	        }
 	    }]);

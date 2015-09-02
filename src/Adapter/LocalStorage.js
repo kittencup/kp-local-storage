@@ -3,7 +3,6 @@ import Util from '../Unit/Util.js';
 
 class LocalStorage extends AbstractAdapter {
 
-
     constructor(options = {}) {
         super(options);
         this._type = 'localStorage';
@@ -30,31 +29,30 @@ class LocalStorage extends AbstractAdapter {
         }
     }
 
-    setContainer(container) {
-        let containerJson = Util.toJson(container);
+    getItem(key) {
+        let itemJson = window[this._type].getItem(key);
+
+        if (!itemJson) {
+            return null;
+        }
+
+        return Util.jsonTo(itemJson);
+    }
+
+    setItem(key, item) {
+        let itemJson = Util.toJson(item);
         try {
-            window[this._type].setItem(this._containerName, containerJson);
+            window[this._type].setItem(key, itemJson);
         } catch (e) {
             // @todo error 可能存满了？
         }
         return this;
     }
 
-    getContainer() {
-        let containerJson = window[this._type].getItem(this._containerName);
-
-        if (!containerJson) {
-            return {};
-        }
-
-        return Util.jsonTo(containerJson);
-    }
-
-    removeContainer() {
-        window[this._type].removeItem(this._containerName);
+    removeItem(key) {
+        window[this._type].removeItem(key);
         return this;
     }
-
 }
 
 export default LocalStorage;

@@ -1,52 +1,66 @@
 import Container from '../../src/Container/Container.js';
+import LocalStorage from '../../src/Adapter/LocalStorage.js';
 
 describe('Container Test', () => {
 
-    let name = 'Container_name_' + (+new Date());
+    let time = +new Date();
+    let name = 'container_name_' + (+new Date());
     let container = new Container(name);
-    var keys = [];
-    let key = 'key_' + (+new Date());
-    let item = 'item_' + (+new Date());
-    var adapterContainter = {};
-    adapterContainter[key] = item;
+    let adapter = new LocalStorage();
+    let itemContainer = {
+        __type__: 'itemContainer'
+    };
+    let key = 'container_key_' + time;
+    let item = {};
+    for (let i = 0; i < 10; i++) {
+        let randomKey = Math.random() * 1000;
+        item[randomKey] = [Math.random() * 500];
+    }
+
+    it('isItemContainer()', ()=> {
+        expect(container.isItemContainer(itemContainer)).toBe(true);
+    });
+
+    it('createItemContainer()', ()=> {
+        expect(container.createItemContainer()).toEqual(itemContainer);
+    });
 
     it('isSupported()', ()=> {
         expect(container.isSupported()).toBe(true);
     });
 
-    it('setName(),getName()', ()=> {
+    it('setName(),getName()',()=>{
         expect(container.setName(name)).toEqual(container);
-        expect(container.getName()).toBe(name);
+        expect(container.getName()).toEqual(name);
     });
 
-    it('setAdapter(),getAdapter()', ()=> {
-        let defaultAdapter = container.getAdapter();
-        expect(container.setAdapter(defaultAdapter)).toEqual(container);
-        expect(container.getAdapter()).toEqual(defaultAdapter);
+    it('setAdapter(),getAdapter()',()=>{
+        expect(container.setAdapter(adapter)).toEqual(container);
+        expect(container.getAdapter()).toEqual(adapter);
     });
 
-    it('getItem(),setItem()', ()=> {
+    it('setItem(),getItem()', ()=> {
         expect(container.setItem(key, item)).toEqual(container);
         expect(container.getItem(key)).toEqual(item);
     });
 
-    it('keys()' ,()=>{
-        expect(container.keys().length).toEqual(1);
+    it('keys()', ()=> {
+        expect(container.keys()).toEqual([key]);
     });
 
-    it('getContainer()' ,()=>{
-        expect(container.getContainer()).toEqual(adapterContainter);
-    });
-
-    it('removeItem()' ,()=>{
+    it('removeItem()', ()=> {
         expect(container.removeItem(key)).toEqual(container);
+        expect(container.getItem(key)).toEqual(null);
     });
 
-    it('removeContainer()' ,()=>{
-        expect(container.removeContainer()).toEqual(container);
-        expect(container.getContainer()).toEqual({});
+    it('setItemContainer(),getItemContainer()', ()=> {
+        expect(container.setItemContainer(item)).toEqual(container);
+        expect(container.getItemContainer()).toEqual(item);
     });
 
-
+    it('removeItemContainer()', ()=> {
+        expect(container.removeItemContainer()).toEqual(container);
+        expect(container.getItemContainer()).toEqual(null);
+    });
 });
 

@@ -1,9 +1,7 @@
 class AbstractAdapter {
 
-    constructor(options = {}) {
-        if(options.containerName){
-            this._containerName = options.containerName;
-        }
+    constructor() {
+
     }
 
     getName() {
@@ -14,54 +12,16 @@ class AbstractAdapter {
         throw new Error('This method is abstract');
     }
 
-    setContainer() {
+    getItem() {
         throw new Error('This method is abstract');
     }
 
-    getContainer() {
+    setItem() {
         throw new Error('This method is abstract');
     }
 
-    removeContainer() {
+    removeItem() {
         throw new Error('This method is abstract');
-    }
-
-    getItem(key) {
-        return this.getContainer()[key];
-    }
-
-    setItem(key, item) {
-        let container = this.getContainer();
-        container[key] = item;
-        this.setContainer(container);
-        return this;
-    }
-
-    removeItem(key) {
-        let container = this.getContainer();
-        delete container[key];
-        this.setContainer(container);
-        return this;
-    }
-
-    keys() {
-        let container = this.getContainer();
-        let keys = [];
-        for (let key in container) {
-            if (container.hasOwnProperty(key)) {
-                keys.push(key);
-            }
-        }
-        return keys;
-    }
-
-    setContainerName(containerName) {
-        this._containerName = containerName;
-        return this;
-    }
-
-    getContainerName() {
-        return this._containerName;
     }
 }
 
