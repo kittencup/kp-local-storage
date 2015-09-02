@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "localstorage adapter",
   "author": {
-    "name":  "kittencup",
-    "email":"kittencup@163.com",
-    "url":"http://kittencup.com"
+    "name": "kittencup",
+    "email": "kittencup@163.com",
+    "url": "http://kittencup.com"
   },
   "scripts": {
-    "test": "./node_modules/.bin/karma start --single-run"
+    "test": "./node_modules/.bin/karma start --single-run --browsers PhantomJS"
   },
   "repository": {
     "type": "git",
@@ -35,6 +35,8 @@
     "karma-babel-preprocessor": "^5.2.2",
     "karma-chrome-launcher": "^0.2.0",
     "karma-jasmine": "^0.3.6",
-    "karma-requirejs": "^0.2.2"
+    "karma-phantomjs-launcher": "^0.2.1",
+    "karma-requirejs": "^0.2.2",
+    "phantomjs": "^1.9.18"
   }
 }
