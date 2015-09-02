@@ -14,16 +14,6 @@ class Container {
 
     }
 
-    isItemContainer(value) {
-        return Object.prototype.toString.call(value) === '[object Object]' && value.__type__ === 'itemContainer';
-    }
-
-    createItemContainer() {
-        let container = {};
-        container.__type__ = 'itemContainer';
-        return container;
-    }
-
     isSupported() {
         return this._adapter.isSupported();
     }
@@ -50,14 +40,9 @@ class Container {
         let itemContainer = this.getItemContainer();
         let keys = [];
 
-        if (this.isItemContainer(itemContainer)) {
-            for (var key in itemContainer) {
-                if(itemContainer.hasOwnProperty(key)){
-                    if (key === '__type__') {
-                        continue;
-                    }
-                    keys.push(key);
-                }
+        for (var key in itemContainer) {
+            if (itemContainer.hasOwnProperty(key)) {
+                keys.push(key);
             }
         }
 
@@ -68,19 +53,20 @@ class Container {
 
         let itemContainer = this.getItemContainer();
 
-        if (this.isItemContainer(itemContainer)) {
+        if (itemContainer) {
             return itemContainer[key] || null;
         }
 
         return null;
+
     }
 
     setItem(key, item) {
 
         let itemContainer = this.getItemContainer();
 
-        if (!this.isItemContainer(itemContainer)) {
-            itemContainer = this.createItemContainer();
+        if (!itemContainer) {
+            itemContainer = {};
         }
 
         itemContainer[key] = item;
@@ -94,7 +80,7 @@ class Container {
 
         let itemContainer = this.getItemContainer();
 
-        if (this.isItemContainer(itemContainer)) {
+        if (itemContainer) {
             delete itemContainer[key];
             this.setItemContainer(itemContainer);
         }

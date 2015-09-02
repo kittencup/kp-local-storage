@@ -137,18 +137,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	    _createClass(Container, [{
-	        key: 'isItemContainer',
-	        value: function isItemContainer(value) {
-	            return Object.prototype.toString.call(value) === '[object Object]' && value.__type__ === 'itemContainer';
-	        }
-	    }, {
-	        key: 'createItemContainer',
-	        value: function createItemContainer() {
-	            var container = {};
-	            container.__type__ = 'itemContainer';
-	            return container;
-	        }
-	    }, {
 	        key: 'isSupported',
 	        value: function isSupported() {
 	            return this._adapter.isSupported();
@@ -181,14 +169,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var itemContainer = this.getItemContainer();
 	            var keys = [];
 	
-	            if (this.isItemContainer(itemContainer)) {
-	                for (var key in itemContainer) {
-	                    if (itemContainer.hasOwnProperty(key)) {
-	                        if (key === '__type__') {
-	                            continue;
-	                        }
-	                        keys.push(key);
-	                    }
+	            for (var key in itemContainer) {
+	                if (itemContainer.hasOwnProperty(key)) {
+	                    keys.push(key);
 	                }
 	            }
 	
@@ -200,7 +183,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var itemContainer = this.getItemContainer();
 	
-	            if (this.isItemContainer(itemContainer)) {
+	            if (itemContainer) {
 	                return itemContainer[key] || null;
 	            }
 	
@@ -212,8 +195,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var itemContainer = this.getItemContainer();
 	
-	            if (!this.isItemContainer(itemContainer)) {
-	                itemContainer = this.createItemContainer();
+	            if (!itemContainer) {
+	                itemContainer = {};
 	            }
 	
 	            itemContainer[key] = item;
@@ -228,7 +211,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	            var itemContainer = this.getItemContainer();
 	
-	            if (this.isItemContainer(itemContainer)) {
+	            if (itemContainer) {
 	                delete itemContainer[key];
 	                this.setItemContainer(itemContainer);
 	            }

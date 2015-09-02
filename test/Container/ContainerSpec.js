@@ -7,23 +7,13 @@ describe('Container Test', () => {
     let name = 'container_name_' + (+new Date());
     let container = new Container(name);
     let adapter = new LocalStorage();
-    let itemContainer = {
-        __type__: 'itemContainer'
-    };
+
     let key = 'container_key_' + time;
     let item = {};
     for (let i = 0; i < 10; i++) {
         let randomKey = Math.random() * 1000;
         item[randomKey] = [Math.random() * 500];
     }
-
-    it('isItemContainer()', ()=> {
-        expect(container.isItemContainer(itemContainer)).toBe(true);
-    });
-
-    it('createItemContainer()', ()=> {
-        expect(container.createItemContainer()).toEqual(itemContainer);
-    });
 
     it('isSupported()', ()=> {
         expect(container.isSupported()).toBe(true);
