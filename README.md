@@ -2,11 +2,12 @@
 
 #### Adapter
 
+```
 var adapter = new KpLocalStorage.Adapter.LocalStorage(options);
 var adapter = new KpLocalStorage.Adapter.CookieStorage(options);
 var adapter = new KpLocalStorage.Adapter.SessionStorage(options);
 var adapter = new KpLocalStorage.Adapter.ArrayStorage(options);
-
+```
 
 #### Container
 
