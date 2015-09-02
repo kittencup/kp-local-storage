@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/kp-localstorage.svg)](http://badge.fury.io/js/kp-localstorage)
+
 # How To Use
 
 #### Adapter
@@ -21,8 +23,11 @@ container.getAdapter();
 container.setItem(key,item);
 container.getItem(key)
 container.removeItem(key);
-container.getContainer();
-container.removeContainer();
+container.getItemContainer();
+container.removeItemContainer();
+container.setItemContainer();
+container.keys();
+container.isSupported();
 ```
 
 #### ContainerFactory

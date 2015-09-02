@@ -1,6 +1,6 @@
 {
-  "name": "KpLocalStorage",
-  "version": "0.0.1",
+  "name": "kp-localstorage",
+  "version": "1.0.0",
   "homepage": "https://github.com/kittencup/KpLocalStorage",
   "authors": [
     "kittencup <112367@qq.com>"
