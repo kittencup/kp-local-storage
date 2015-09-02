@@ -63,6 +63,11 @@ class Container {
         return this;
     }
 
+    setContainer(container) {
+        this.adapter.setContainer(container);
+        return this;
+    }
+
 }
 
 export default Container;
