@@ -1,5 +1,5 @@
 {
-  "name": "kp-localstorage",
+  "name": "kp-local-storage",
   "version": "1.0.0",
   "description": "localstorage adapter",
   "author": {
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kittencup/kp-localstorage.git"
+    "url": "https://github.com/kittencup/kp-local-storage.git"
   },
   "keywords": [
     "browser",
