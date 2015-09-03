@@ -1,6 +1,6 @@
 [![npm](https://img.shields.io/badge/npm-1.0.0-blue.svg)](https://www.npmjs.com/package/kp-localstorage)
 [![Bower](https://img.shields.io/badge/bower-1.0.0-red.svg)](https://github.com/kittencup/kp-localstorage)
-[![build](https://api.travis-ci.org/kittencup/kp-localstorage.svg)](https://github.com/kittencup/kp-localstorage)
+[![Build Status](https://travis-ci.org/kittencup/kp-local-storage.svg?branch=master)](https://travis-ci.org/kittencup/kp-local-storage)
 # How To Use
 
 #### Adapter
